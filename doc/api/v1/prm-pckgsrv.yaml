@@ -161,14 +161,9 @@ definitions:
                         items:
                             $ref: '#/definitions/CommandComponent'
             outputs:
-                type: object
-                required:
-                    - resources
-                properties:
-                    resources:
-                        type: array
-                        items:
-                            $ref: '#/definitions/OutputDescriptor'
+                type: array
+                items:
+                    $ref: '#/definitions/OutputDescriptor'
             install:
                 type: object
                 required:
