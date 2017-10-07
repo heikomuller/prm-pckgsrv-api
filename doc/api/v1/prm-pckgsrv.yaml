@@ -2,7 +2,7 @@ swagger: "2.0"
 
 info:
   version: 0.1.0
-  title: prm - Package Manager Web API
+  title: prm - Package Server Web API
   description: API to query prm package and module specifications
   license:
     name: Apache 2.0
@@ -12,7 +12,7 @@ schemes:
   - http
 host: cds-dc.cims.nyu.edu
 #host: localhost:5000
-basePath: /prm/package-manager/api/v1
+basePath: /prm/package-server/api/v1
 
 paths:
     #
@@ -94,6 +94,17 @@ paths:
                 404:
                     description: Unknown package
 definitions:
+    KeyValuePair:
+        type: object
+        description: Simple key-value pair
+        required:
+            - key
+            - value
+        properties:
+            key:
+                type: string
+            value:
+                type: string
     ModuleSpecification:
         type: object
         description: Module in VizUAL workflow
@@ -118,6 +129,13 @@ definitions:
                 type: object
             install:
                 type: object
+                required:
+                    - tasks
+                properties:
+                    tasks:
+                        type: array
+                        items:
+                            $ref: '#/definitions/TaskDescriptor'
             links:
                 type: array
                 items:
@@ -174,3 +192,16 @@ definitions:
                 type: array
                 items:
                     $ref: "#/definitions/Reference"
+    TaskDescriptor:
+        type: object
+        description: Descriptor for task in module install workflow
+        required:
+            - type
+            - properties
+        properties:
+            type:
+                type: string
+            properties:
+                type: array
+                items:
+                    $ref: "#/definitions/KeyValuePair"
