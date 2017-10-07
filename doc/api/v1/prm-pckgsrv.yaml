@@ -94,6 +94,20 @@ paths:
                 404:
                     description: Unknown package
 definitions:
+    CommandComponent:
+        type: object
+        required:
+            - type
+            - value
+        properties:
+            type:
+                type: string
+            value:
+                type: string
+            varType:
+                type: string
+            asInput:
+                type: boolean
     KeyValuePair:
         type: object
         description: Simple key-value pair
@@ -120,11 +134,32 @@ definitions:
             name:
                 type: string
             package:
-                type: string
+                type: object
+                required:
+                    - name
+                    - subpath
+                    - version
+                properties:
+                    name:
+                        type: string
+                    subpath:
+                        type: string
+                    version:
+                        type: string
             description:
                 type: string
             command:
                 type: object
+                required:
+                    - type
+                    - components
+                properties:
+                    type:
+                        type: string
+                    components:
+                        type: array
+                        items:
+                            $ref: '#/definitions/CommandComponent'
             output:
                 type: object
             install:
