@@ -1,0 +1,176 @@
+swagger: "2.0"
+
+info:
+  version: 0.1.0
+  title: prm - Package Manager Web API
+  description: API to query prm package and module specifications
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+schemes:
+  - http
+host: cds-dc.cims.nyu.edu
+#host: localhost:5000
+basePath: /prm/package-manager/api/v1
+
+paths:
+    #
+    # Overview
+    #
+    /:
+        get:
+            summary: Service description
+            description: Essential information about the web service and relevant links
+            operationId: serviceOverview
+            tags:
+                - service
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Service descriptor
+                    schema:
+                        $ref: '#/definitions/ServiceOverview'
+    #
+    # Packages
+    #
+    /packages:
+        get:
+            summary: List packages
+            description: List all available packages with their description
+            operationId: listPackages
+            tags:
+                - package
+            produces:
+              - application/json
+            responses:
+                200:
+                    description: A list of package descriptors
+                    schema:
+                        type: object
+                        required:
+                            - packages
+                            - links
+                        properties:
+                            projects:
+                                type: array
+                                items:
+                                    $ref: "#/definitions/PackageDescriptor"
+                            links:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/Reference'
+    /packages/{packageQuery}:
+        get:
+            summary: Get modules
+            description: Get module specifications that match the given package query
+            operationId: getModules
+            tags:
+                - package
+            parameters:
+                - name: packageQuery
+                  in: path
+                  required: true
+                  description: Package name prefix query
+                  type: string
+            responses:
+                200:
+                    description: List of matching module specifications
+                    schema:
+                        type: object
+                        required:
+                            - modules
+                            - links
+                        properties:
+                            projects:
+                                type: array
+                                items:
+                                    $ref: "#/definitions/ModuleSpecification"
+                            links:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/Reference'
+                404:
+                    description: Unknown package
+definitions:
+    ModuleSpecification:
+        type: object
+        description: Module in VizUAL workflow
+        required:
+            - name
+            - package
+            - description
+            - command
+            - output
+            - install
+            - links
+        properties:
+            name:
+                type: string
+            package:
+                type: string
+            description:
+                type: string
+            command:
+                type: object
+            output:
+                type: object
+            install:
+                type: object
+            links:
+                type: array
+                items:
+                    $ref: '#/definitions/Reference'
+    PackageDescriptor:
+        type: object
+        description: Fundamental project metadata and references
+        required:
+            - name
+            - description
+            - version
+            - createdAt
+            - lastModifiedAt
+            - links
+        properties:
+            name:
+                type: string
+            description:
+                type: string
+            version:
+                type: string
+            createdAt:
+                type: string
+            lastModifiedAt:
+                type: string
+            links:
+                type: array
+                items:
+                    $ref: "#/definitions/Reference"
+    Reference:
+        type: object
+        description: "HATEOAS reference object"
+        required:
+            - rel
+            - href
+        properties:
+            rel:
+                type: string
+            href:
+                type: string
+    ServiceOverview:
+        type: object
+        description: Basic service properties
+        required:
+            - name
+            - title
+            - links
+        properties:
+            name:
+                type: string
+            title:
+                type: string
+            links:
+                type: array
+                items:
+                    $ref: "#/definitions/Reference"
