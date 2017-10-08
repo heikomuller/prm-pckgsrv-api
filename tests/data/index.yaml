@@ -1,0 +1,5 @@
+packages:
+    - name: 'urban-integration'
+      file: './data/urban-integration.yaml'
+    - name: 'cityofnewyork'
+      file: './data/cityofnewyork.yaml'
