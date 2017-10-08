@@ -53,7 +53,7 @@ paths:
                             - packages
                             - links
                         properties:
-                            projects:
+                            packages:
                                 type: array
                                 items:
                                     $ref: "#/definitions/PackageDescriptor"
@@ -83,7 +83,7 @@ paths:
                             - modules
                             - links
                         properties:
-                            projects:
+                            modules:
                                 type: array
                                 items:
                                     $ref: "#/definitions/ModuleSpecification"
@@ -125,7 +125,9 @@ definitions:
         required:
             - name
             - package
+            - folder
             - description
+            - version
             - command
             - outputs
             - settings
@@ -135,19 +137,12 @@ definitions:
             name:
                 type: string
             package:
-                type: object
-                required:
-                    - name
-                    - subpath
-                    - version
-                properties:
-                    name:
-                        type: string
-                    subpath:
-                        type: string
-                    version:
-                        type: string
+                type: string
+            folder:
+                type: string
             description:
+                type: string
+            version:
                 type: string
             command:
                 type: object
@@ -207,7 +202,7 @@ definitions:
                             $ref: "#/definitions/KeyValuePair"
     PackageDescriptor:
         type: object
-        description: Fundamental project metadata and references
+        description: Fundamental package metadata and references
         required:
             - name
             - description

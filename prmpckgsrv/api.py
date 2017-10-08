@@ -192,6 +192,8 @@ class PrmPackageServer(object):
         for module in read_modules(package.file, self.download_prefix):
             if module.matches(query[1:]):
                 m = module.to_dict()
+                m['package'] = package_name
+                m['version'] = package.version
                 m[JSON_REFERENCES] = [
                     self_reference(
                         self.urls.module_url(
